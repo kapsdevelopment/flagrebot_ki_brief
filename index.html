@@ -5,13 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Prøv en presentasjon der robotavataren bretter ut teksten på et papirark.">
   <title>AI-brief på papir</title>
-  <link rel="stylesheet" href="papir.css?v=13">
+  <link rel="stylesheet" href="papir.css?v=14">
   <script src="head.js" defer></script>
   <script src="idle.js?v=10" defer></script>
   <script src="spin.js" defer></script>
   <script src="robot.js?v=7" defer></script>
-  <script src="slides.js?v=4" defer></script>
-  <script src="papir.js?v=12" defer></script>
+  <script src="slides.js?v=5" defer></script>
+  <script src="papir.js?v=13" defer></script>
 </head>
 <body>
   <main id="presentation" tabindex="0" aria-label="KI-brief"
@@ -23,7 +23,7 @@
       <span>1 0 1 1 0 0 KI 0 0 1</span>
       <span>0 KI 1 0 1 1 0 1 0 0</span>
     </div>
-    <div class="scene-wrap">
+    <div class="scene-wrap" id="paper-slide">
       <div class="scene" id="scene" data-paper="open">
         <div class="floor-shadow" aria-hidden="true"></div>
         <canvas class="rear-grip" id="rear-grip" width="1086" height="1448" aria-hidden="true"></canvas>
@@ -38,11 +38,23 @@
           </div>
         </article>
         <div class="robot avatar-view">
-          <canvas id="avatar" width="1086" height="1448" role="img" aria-label="Robotavataren ved siden av arket"></canvas>
+          <canvas id="avatar" width="1086" height="1448" role="img" aria-label="Animert Flagrebot"></canvas>
           <canvas id="idle-eyes" width="1086" height="1448" aria-hidden="true" hidden></canvas>
         </div>
       </div>
     </div>
+    <section class="closing-slide" id="closing-slide" aria-labelledby="closing-title" hidden>
+      <h2 id="closing-title"></h2>
+      <div class="closing-layout">
+        <div class="closing-pair">
+          <div class="closing-photo">
+            <img src="flagrebot-original.jpg" width="768" height="1024" alt="Den ekte Flagrebot, en hvit robot med rosa detaljer">
+          </div>
+          <div class="closing-avatar" id="closing-avatar"></div>
+        </div>
+        <div class="closing-metrics" id="closing-metrics"></div>
+      </div>
+    </section>
     <p class="visually-hidden" id="status" role="status"></p>
     <noscript><p>Slå på JavaScript for å prøve papirvisningen.</p></noscript>
   </main>

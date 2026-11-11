@@ -92,4 +92,13 @@ const pages = [
       },
     ],
   },
+  {
+    title: "Slik laget vi briefen",
+    layout: "closing",
+    metrics: [
+      { value: "1 211", label: "linjer kode" },
+      { value: "2 t 57 min", label: "i Codex-øktene" },
+      { value: "50–90 t", label: "anslag for manuelt arbeid i 2021" },
+    ],
+  },
 ];

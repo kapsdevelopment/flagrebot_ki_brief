@@ -1,13 +1,19 @@
 "use strict";
 
 const presentation = document.getElementById("presentation");
+const paperSlide = document.getElementById("paper-slide");
 const scene = document.getElementById("scene");
 const letter = document.getElementById("letter");
 const pageTitle = document.getElementById("page-title");
 const pageCopy = document.getElementById("page-copy");
 const status = document.getElementById("status");
 const avatar = document.getElementById("avatar");
+const avatarView = avatar.parentElement;
 const rearGrip = document.getElementById("rear-grip");
+const closingSlide = document.getElementById("closing-slide");
+const closingTitle = document.getElementById("closing-title");
+const closingAvatar = document.getElementById("closing-avatar");
+const closingMetrics = document.getElementById("closing-metrics");
 const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
 const navigationKeys = new Map([
   ["ArrowLeft", -1], ["ArrowUp", -1], ["PageUp", -1],
@@ -65,12 +71,34 @@ function fitText(element, widen = false) {
 }
 
 function fitSlideText() {
+  if (paperSlide.hidden) return;
   fitText(pageTitle);
   fitText(pageCopy, true);
 }
 
 function renderPage() {
   const current = pages[page];
+  const showClosing = current.layout === "closing";
+  paperSlide.hidden = showClosing;
+  closingSlide.hidden = !showClosing;
+  if (showClosing) {
+    closingAvatar.append(avatarView);
+    closingTitle.textContent = current.title;
+    closingMetrics.replaceChildren();
+    for (const { value, label } of current.metrics) {
+      const metric = document.createElement("p");
+      metric.className = "closing-metric";
+      const number = document.createElement("strong");
+      number.textContent = value;
+      const caption = document.createElement("span");
+      caption.textContent = label;
+      metric.append(number, caption);
+      closingMetrics.append(metric);
+    }
+    return;
+  }
+
+  if (avatarView.parentElement !== scene) scene.append(avatarView);
   pageTitle.textContent = current.title;
   pageCopy.replaceChildren();
   const blocks = Array.isArray(current.copy) ? current.copy : [current.copy];
@@ -130,7 +158,7 @@ async function spinDuringRest() {
     avatar.setAttribute("aria-label", "Robotavataren tar en piruett");
     await animate(1150, (progress) => robot.spin(spinImage, progress));
     robot.draw(0, 0);
-    avatar.setAttribute("aria-label", "Robotavataren ved siden av arket");
+    avatar.setAttribute("aria-label", "Animert Flagrebot");
   })();
   try {
     await spinning;
@@ -151,6 +179,14 @@ async function goToSlide(direction) {
     status.textContent = "Bytter tekst …";
     if (spinning) await spinning;
     else await idle?.settle();
+    if (pages[page].layout === "closing" || pages[nextPage].layout === "closing") {
+      page = nextPage;
+      renderPage();
+      robot.draw(0, 0);
+      status.textContent = `${page + 1} av ${pages.length} · ${pages[page].title}`;
+      return;
+    }
+
     await animate(420, (progress) => robot.draw(0, progress));
     await animate(150, (progress) => robot.draw(0, 1, progress));
 

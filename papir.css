@@ -266,6 +266,120 @@ h2 {
   color: #644b54;
 }
 
+.closing-slide {
+  --portrait-height: min(58dvh, 35vw, 27rem);
+  width: min(calc(100% - 2rem), 76rem);
+  margin-block: clamp(1rem, 4dvh, 3rem);
+  animation: closing-appear .28s ease-out;
+}
+
+.closing-slide h2 {
+  margin-block-end: clamp(1rem, 3dvh, 1.8rem);
+  font-size: clamp(1.65rem, 4.6vw, 3.9rem);
+  text-align: center;
+}
+
+.closing-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  align-items: center;
+  gap: .9rem clamp(.7rem, 3vw, 3rem);
+}
+
+.closing-pair {
+  grid-area: 1 / 2 / 3;
+  display: flex;
+  align-items: end;
+  gap: clamp(.75rem, 2vw, 1.7rem);
+}
+
+.closing-photo {
+  width: calc(var(--portrait-height) * .64);
+  height: var(--portrait-height);
+  overflow: hidden;
+  border-radius: .5rem;
+  box-shadow: 0 .6rem 1.6rem #5a40342a;
+}
+
+.closing-photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 45% center;
+  transform: scale(1.28);
+  transform-origin: 45% center;
+}
+
+.closing-avatar {
+  position: relative;
+  width: calc(var(--portrait-height) * .51);
+  height: var(--portrait-height);
+  overflow: clip;
+  overflow-clip-margin: .65rem;
+}
+
+.closing-avatar::before {
+  content: "";
+  position: absolute;
+  inset: 94% 0 0;
+  background: radial-gradient(ellipse, #70506038 0%, transparent 72%);
+}
+
+.closing-avatar .robot {
+  top: 0;
+  left: 50%;
+  width: auto;
+  height: 100%;
+  aspect-ratio: 3 / 4;
+  transform: translateX(-30%);
+}
+
+.closing-metrics { display: contents; }
+
+.closing-metric {
+  margin: 0;
+  text-align: center;
+  font-size: clamp(.76rem, 1.55vw, 1.15rem);
+  line-height: 1.25;
+}
+
+.closing-metric strong {
+  display: block;
+  margin-block-end: .2em;
+  color: #813b5a;
+  font-family: ui-serif, Georgia, serif;
+  font-size: clamp(1.18rem, 4vw, 3.65rem);
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.closing-metric:first-child { grid-area: 1 / 1 / 3; }
+.closing-metric:nth-child(2) { grid-area: 1 / 3; }
+.closing-metric:nth-child(3) { grid-area: 2 / 3; }
+
+@keyframes closing-appear {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@media (max-width: 700px) {
+  .closing-slide { --portrait-height: min(49dvh, 70vw, 27rem); }
+  .closing-layout {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-rows: auto auto;
+  }
+  .closing-pair { grid-area: 1 / 1 / 2 / -1; justify-self: center; }
+  .closing-metric:first-child { grid-area: 2 / 1; }
+  .closing-metric:nth-child(2) { grid-area: 2 / 2; }
+  .closing-metric:nth-child(3) { grid-area: 2 / 3; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .closing-slide { animation: none; }
+}
+
 .visually-hidden {
   position: absolute;
   width: 1px;
