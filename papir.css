@@ -22,11 +22,11 @@ main:focus-visible {
   outline-offset: -2px;
 }
 
-.scene-wrap { width: min(100%, 68rem); container-type: inline-size; }
+.scene-wrap { width: min(100%, 78rem); container-type: inline-size; }
 .scene {
   --top-inset: clamp(.65rem, min(4cqw, 5dvh), 2.5rem);
   --edge: clamp(.6rem, min(4.5cqw, 6dvh), 2.7rem);
-  --robot-height: clamp(5.75rem, min(36cqw, calc((100dvh - var(--top-inset) - var(--edge)) / 1.3624)), 21rem);
+  --robot-height: clamp(5.75rem, min(36cqw, calc((100dvh - var(--top-inset) - var(--edge)) / 1.3624)), 24rem);
   --sheet-height: calc(var(--robot-height) * 1.12);
   --sheet-left: calc(clamp(.45rem, 5cqw, 3.1rem) + var(--robot-height) * .543);
   --sheet-top: calc(var(--top-inset) + var(--robot-height) * .2424);
@@ -190,16 +190,15 @@ main:focus-visible {
   transform: rotateX(180deg);
 }
 
-.page-index { margin: 0 0 .6rem; color: #7c525c; font-size: clamp(.66rem, 1.55cqw, .83rem); font-weight: 650; }
 h2 {
   margin: 0;
   font-family: ui-serif, Georgia, serif;
-  font-size: clamp(1.12rem, min(5.5cqw, calc(var(--robot-height) * .18)), 3.25rem);
+  font-size: clamp(1.12rem, min(5.5cqw, calc(var(--robot-height) * .18)), 3.74rem);
   font-weight: 600;
   line-height: 1.04;
   letter-spacing: -.035em;
 }
-.page-copy { margin: 0; max-width: 35ch; font-size: clamp(.8rem, min(2.6cqw, calc(var(--robot-height) * .095)), 1.32rem); line-height: 1.35; }
+.page-copy { margin: 0; max-width: 35ch; font-size: clamp(.8rem, min(2.6cqw, calc(var(--robot-height) * .095)), 1.52rem); line-height: 1.35; }
 
 .visually-hidden {
   position: absolute;
@@ -214,5 +213,4 @@ h2 {
 
 @media (max-width: 460px) {
   .sheet { --letter-inset: .62rem; }
-  .page-index { margin-bottom: .3rem; }
 }

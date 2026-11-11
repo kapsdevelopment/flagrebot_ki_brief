@@ -3,13 +3,16 @@
 const presentation = document.getElementById("presentation");
 const scene = document.getElementById("scene");
 const letter = document.getElementById("letter");
-const pageIndex = document.getElementById("page-index");
 const pageTitle = document.getElementById("page-title");
 const pageCopy = document.getElementById("page-copy");
 const status = document.getElementById("status");
 const avatar = document.getElementById("avatar");
 const rearGrip = document.getElementById("rear-grip");
 const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
+const navigationKeys = new Map([
+  ["ArrowLeft", -1], ["ArrowUp", -1], ["PageUp", -1],
+  ["ArrowRight", 1], ["ArrowDown", 1], ["PageDown", 1], ["Enter", 1], [" ", 1],
+]);
 let page = 0;
 let moving = false;
 let robot;
@@ -38,7 +41,6 @@ function animate(duration, draw) {
 
 function renderPage() {
   const current = pages[page];
-  pageIndex.textContent = `Side ${page + 1} av ${pages.length}`;
   pageTitle.textContent = current.title;
   pageCopy.textContent = current.copy;
 }
@@ -76,8 +78,10 @@ async function spinDuringRest() {
   }
 }
 
-async function advance() {
+async function goToSlide(direction) {
   if (!robot || moving) return;
+  const nextPage = (page + direction + pages.length) % pages.length;
+  if (nextPage === page) return;
   moving = true;
   clearTimeout(spinTimer);
   try {
@@ -91,7 +95,7 @@ async function advance() {
     scene.dataset.paper = "closing";
     await foldBetween(0, 1);
     scene.dataset.paper = "folded";
-    page = (page + 1) % pages.length;
+    page = nextPage;
     renderPage();
     if (!reducedMotion.matches) await new Promise((resolve) => setTimeout(resolve, 120));
 
@@ -110,14 +114,17 @@ async function advance() {
 }
 
 renderPage();
-presentation.addEventListener("click", () => {
-  if (!window.getSelection()?.toString()) advance();
+presentation.addEventListener("click", (event) => {
+  if (window.getSelection()?.toString()) return;
+  const { left, width } = presentation.getBoundingClientRect();
+  goToSlide(event.clientX < left + width / 2 ? -1 : 1);
 });
 document.addEventListener("keydown", (event) => {
   if (event.defaultPrevented || event.altKey || event.ctrlKey || event.metaKey) return;
-  if (!["Enter", " ", "ArrowRight"].includes(event.key)) return;
+  const direction = navigationKeys.get(event.key);
+  if (direction === undefined) return;
   event.preventDefault();
-  if (!event.repeat) advance();
+  if (!event.repeat) goToSlide(direction);
 });
 
 function loadIllustration(url) {
