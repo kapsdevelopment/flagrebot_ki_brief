@@ -371,6 +371,7 @@ h2 {
     grid-template-rows: auto auto;
   }
   .closing-pair { grid-area: 1 / 1 / 2 / -1; justify-self: center; }
+  .closing-metric strong { font-size: clamp(.9rem, 4.25vw, 1.9rem); }
   .closing-metric:first-child { grid-area: 2 / 1; }
   .closing-metric:nth-child(2) { grid-area: 2 / 2; }
   .closing-metric:nth-child(3) { grid-area: 2 / 3; }
