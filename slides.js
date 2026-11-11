@@ -11,14 +11,14 @@ const pages = [
         bullets: [
           "Bildegenerering med Midjourney og DALL·E",
           "ChatGPT og lekkasje av språkmodeller",
-          "Ekstrem støtte til programvareutvikling",
           "Halve Nobelprisen i kjemi i 2024 gikk til KI-forskerne Demis Hassabis og John Jumper",
         ],
       },
     ],
   },
   {
-    title: "Codex / Claude Code med flere",
+    title: "Programvareutvikling",
+    copy: [{ bullets: ["ChatGPT/Codex", "Claude Code"] }],
   },
   {
     title: "Tre forskjellige modeller med KI-verktøy",
@@ -60,6 +60,23 @@ const pages = [
           "Vær veldig bevisst på hva slags informasjon du deler til tjenester på nett",
           "Etter hvert skal vi skaffe oss verktøy på innsiden",
           "Kvalitetssjekk alltid resultatet",
+        ],
+      },
+    ],
+  },
+  {
+    title: "Inspirasjon fra Nittedal kommune",
+    copy: [
+      "7 prinsipper for KI",
+      {
+        bullets: [
+          "Ikke erstatte, men forsterke",
+          "Mennesket har alltid ansvaret",
+          "Kvalitet og tillit foran effektivitet",
+          "Åpen og felles praksis",
+          "Styrke læring og utøvelse av fag",
+          "Forsvarlig og risikovurdert bruk",
+          "Etikk og verdibasert",
         ],
       },
     ],
