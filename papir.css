@@ -198,7 +198,24 @@ h2 {
   line-height: 1.04;
   letter-spacing: -.035em;
 }
-.page-copy { margin: 0; max-width: 35ch; font-size: clamp(.8rem, min(2.6cqw, calc(var(--robot-height) * .095)), 1.52rem); line-height: 1.35; }
+.page-copy {
+  max-width: 55ch;
+  max-height: 100%;
+  overflow: auto;
+  overscroll-behavior: contain;
+  overflow-wrap: anywhere;
+  font-size: clamp(.8rem, min(2.6cqw, calc(var(--robot-height) * .095)), 1.52rem);
+  line-height: 1.35;
+}
+
+.page-copy > * { margin: 0; }
+.page-copy > * + * { margin-block-start: .4em; }
+.page-copy > p:only-child { max-width: 35ch; }
+.page-copy:has(> ul, > :nth-child(2)) {
+  font-size: clamp(.8rem, min(2.6cqw, calc(var(--robot-height) * .06)), 1.52rem);
+}
+.page-copy ul { padding-inline-start: 1.35em; }
+.page-copy li + li { margin-block-start: .1em; }
 
 .visually-hidden {
   position: absolute;

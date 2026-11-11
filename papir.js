@@ -42,7 +42,24 @@ function animate(duration, draw) {
 function renderPage() {
   const current = pages[page];
   pageTitle.textContent = current.title;
-  pageCopy.textContent = current.copy;
+  pageCopy.replaceChildren();
+  const blocks = Array.isArray(current.copy) ? current.copy : [current.copy];
+  for (const block of blocks) {
+    if (typeof block === "string") {
+      const paragraph = document.createElement("p");
+      paragraph.textContent = block;
+      pageCopy.append(paragraph);
+    } else if (Array.isArray(block?.bullets) && block.bullets.length) {
+      const list = document.createElement("ul");
+      for (const item of block.bullets) {
+        const bullet = document.createElement("li");
+        bullet.textContent = item;
+        list.append(bullet);
+      }
+      pageCopy.append(list);
+    }
+  }
+  pageCopy.scrollTop = 0;
 }
 
 function foldBetween(from, to) {
