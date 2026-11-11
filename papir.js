@@ -80,8 +80,8 @@ async function spinDuringRest() {
 
 async function goToSlide(direction) {
   if (!robot || moving) return;
-  const nextPage = (page + direction + pages.length) % pages.length;
-  if (nextPage === page) return;
+  const nextPage = page + direction;
+  if (nextPage < 0 || nextPage >= pages.length) return;
   moving = true;
   clearTimeout(spinTimer);
   try {
