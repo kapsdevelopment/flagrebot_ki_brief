@@ -17,6 +17,6 @@ Bruk en enkelt tekststreng i `copy` for ett avsnitt. For flere avsnitt eller pun
 }
 ```
 
-Hvis teksten er lengre enn det er plass til på arket, kan du rulle i tekstfeltet.
+Teksten tilpasser seg automatisk til arket. Lange slides bruker mer av bredden og får mindre skrift ved behov.
 
 Start en lokal server fra prosjektmappen med `python3 -m http.server 8000` og åpne [presentasjonen](http://localhost:8000/). Klikk på høyre halvdel for å gå fram og på venstre halvdel for å gå tilbake. Piltastene og Page Up og Page Down virker også. Enter og mellomrom går fram.

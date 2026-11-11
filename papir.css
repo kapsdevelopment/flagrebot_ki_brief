@@ -192,6 +192,8 @@ main:focus-visible {
 
 h2 {
   margin: 0;
+  flex: none;
+  overflow-wrap: anywhere;
   font-family: ui-serif, Georgia, serif;
   font-size: clamp(1.12rem, min(5.5cqw, calc(var(--robot-height) * .18)), 3.74rem);
   font-weight: 600;
@@ -200,9 +202,6 @@ h2 {
 }
 .page-copy {
   max-width: 55ch;
-  max-height: 100%;
-  overflow: auto;
-  overscroll-behavior: contain;
   overflow-wrap: anywhere;
   font-size: clamp(.8rem, min(2.6cqw, calc(var(--robot-height) * .095)), 1.52rem);
   line-height: 1.35;
@@ -211,6 +210,8 @@ h2 {
 .page-copy > * { margin: 0; }
 .page-copy > * + * { margin-block-start: .4em; }
 .page-copy > p:only-child { max-width: 35ch; }
+.page-copy.use-paper-width,
+.page-copy.use-paper-width > p:only-child { max-width: none; }
 .page-copy:has(> ul, > :nth-child(2)) {
   font-size: clamp(.8rem, min(2.6cqw, calc(var(--robot-height) * .06)), 1.52rem);
 }

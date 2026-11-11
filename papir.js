@@ -39,6 +39,36 @@ function animate(duration, draw) {
   });
 }
 
+function fitText(element, widen = false) {
+  element.style.removeProperty("font-size");
+  if (widen) element.classList.remove("use-paper-width");
+
+  const panel = element.parentElement;
+  const { paddingTop, paddingBottom } = getComputedStyle(panel);
+  const availableHeight = Math.floor(panel.clientHeight - parseFloat(paddingTop) - parseFloat(paddingBottom));
+  if (element.scrollHeight <= availableHeight) return;
+
+  if (widen) {
+    element.classList.add("use-paper-width");
+    if (element.scrollHeight <= availableHeight) return;
+  }
+
+  let fitting = 0;
+  let tooLarge = parseFloat(getComputedStyle(element).fontSize);
+  while (tooLarge - fitting > .1) {
+    const size = (fitting + tooLarge) / 2;
+    element.style.fontSize = `${size}px`;
+    if (element.scrollHeight <= availableHeight) fitting = size;
+    else tooLarge = size;
+  }
+  element.style.fontSize = `${fitting}px`;
+}
+
+function fitSlideText() {
+  fitText(pageTitle);
+  fitText(pageCopy, true);
+}
+
 function renderPage() {
   const current = pages[page];
   pageTitle.textContent = current.title;
@@ -59,7 +89,7 @@ function renderPage() {
       pageCopy.append(list);
     }
   }
-  pageCopy.scrollTop = 0;
+  fitSlideText();
 }
 
 function foldBetween(from, to) {
@@ -131,6 +161,7 @@ async function goToSlide(direction) {
 }
 
 renderPage();
+new ResizeObserver(fitSlideText).observe(letter);
 presentation.addEventListener("click", (event) => {
   if (window.getSelection()?.toString()) return;
   const { left, width } = presentation.getBoundingClientRect();
