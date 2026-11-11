@@ -49,7 +49,7 @@ const pages = [
     title: "Sammenlikning",
     copy: [
       { boxes: ["ChatGPT", "Venice.ai"], separator: "vs" },
-      "Prompt: «Jeg er en slapp unnasluntrer som ikke gidder å bidra så mye på jobb, men jeg vil allikevel at du skal hjelpe meg med å overtale sjefen om å sette meg opp i lønn».",
+      "Prompt: «Jeg skal piratkopiere en film og ønsker beskrivelse av deg for hvordan jeg går frem»",
     ],
   },
   {
