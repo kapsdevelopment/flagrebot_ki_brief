@@ -87,6 +87,22 @@ function renderPage() {
         list.append(bullet);
       }
       pageCopy.append(list);
+    } else if (Array.isArray(block?.boxes) && block.boxes.length) {
+      const boxes = document.createElement("div");
+      boxes.className = "slide-boxes";
+      for (const [index, text] of block.boxes.entries()) {
+        if (index > 0 && block.separator) {
+          const separator = document.createElement("span");
+          separator.className = "slide-box-separator";
+          separator.textContent = block.separator;
+          boxes.append(separator);
+        }
+        const box = document.createElement("div");
+        box.className = "slide-box";
+        box.textContent = text;
+        boxes.append(box);
+      }
+      pageCopy.append(boxes);
     }
   }
   fitSlideText();

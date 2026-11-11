@@ -218,6 +218,32 @@ h2 {
 .page-copy ul { padding-inline-start: 1.35em; }
 .page-copy li + li { margin-block-start: .1em; }
 
+.page-copy:has(> .slide-boxes) { max-width: none; }
+
+.slide-boxes {
+  display: flex;
+  gap: .55em;
+}
+
+.slide-box {
+  display: grid;
+  place-items: center;
+  flex: 1;
+  min-width: 0;
+  padding: .65em .55em;
+  border: 1px solid #cbb9ae;
+  border-radius: .18em;
+  background: #eee0d8;
+  text-align: center;
+  font-weight: 650;
+  line-height: 1.2;
+}
+
+.slide-box-separator {
+  align-self: center;
+  color: #644b54;
+}
+
 .visually-hidden {
   position: absolute;
   width: 1px;
