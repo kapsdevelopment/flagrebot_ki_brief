@@ -268,6 +268,7 @@ h2 {
 
 .closing-slide {
   --portrait-height: min(58dvh, 35vw, 27rem);
+  --closing-accent: #813b5a;
   width: min(calc(100% - 2rem), 76rem);
   margin-block: clamp(1rem, 4dvh, 3rem);
   animation: closing-appear .28s ease-out;
@@ -275,6 +276,7 @@ h2 {
 
 .closing-slide h2 {
   margin-block-end: clamp(1rem, 3dvh, 1.8rem);
+  color: var(--closing-accent);
   font-size: clamp(1.65rem, 4.6vw, 3.9rem);
   text-align: center;
 }
@@ -348,7 +350,7 @@ h2 {
 .closing-metric strong {
   display: block;
   margin-block-end: .2em;
-  color: #813b5a;
+  color: var(--closing-accent);
   font-family: ui-serif, Georgia, serif;
   font-size: clamp(1.18rem, 4vw, 3.65rem);
   line-height: 1;
