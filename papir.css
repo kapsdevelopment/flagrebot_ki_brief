@@ -10,6 +10,8 @@
 * { box-sizing: border-box; }
 body { margin: 0; }
 main {
+  position: relative;
+  isolation: isolate;
   display: grid;
   place-items: center;
   min-height: 100vh;
@@ -21,6 +23,26 @@ main:focus-visible {
   outline: 2px solid #a63156;
   outline-offset: -2px;
 }
+
+.digital-pattern {
+  position: absolute;
+  z-index: -1;
+  inset-block-start: clamp(.85rem, 3.5vh, 2.5rem);
+  inset-inline-end: clamp(.85rem, 3vw, 3.25rem);
+  color: #a8567d;
+  opacity: .38;
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: clamp(.65rem, 1.2vw, 1rem);
+  line-height: 1.85;
+  letter-spacing: .09em;
+  text-align: end;
+  white-space: nowrap;
+  mask-image: radial-gradient(ellipse 105% 130% at 100% 0%, #000 8%, #000c 43%, transparent 100%);
+  pointer-events: none;
+  user-select: none;
+}
+
+.digital-pattern span { display: block; }
 
 .scene-wrap { width: min(100%, 78rem); container-type: inline-size; }
 .scene {

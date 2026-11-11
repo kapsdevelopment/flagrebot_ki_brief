@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Prøv en presentasjon der robotavataren bretter ut teksten på et papirark.">
   <title>AI-brief på papir</title>
-  <link rel="stylesheet" href="papir.css?v=12">
+  <link rel="stylesheet" href="papir.css?v=13">
   <script src="head.js" defer></script>
   <script src="idle.js?v=10" defer></script>
   <script src="spin.js" defer></script>
@@ -17,6 +17,12 @@
   <main id="presentation" tabindex="0" aria-label="KI-brief"
         aria-keyshortcuts="ArrowLeft ArrowRight ArrowUp ArrowDown PageUp PageDown Enter Space"
         aria-description="Klikk til venstre for forrige side eller til høyre for neste. Du kan også bruke piltastene eller Page Up og Page Down.">
+    <div class="digital-pattern" aria-hidden="true">
+      <span>1 0 0 1 1 0 1 1 1 0 0</span>
+      <span>0 1 1 0 KI 0 0 1 1 0</span>
+      <span>1 0 1 1 0 0 KI 0 0 1</span>
+      <span>0 KI 1 0 1 1 0 1 0 0</span>
+    </div>
     <div class="scene-wrap">
       <div class="scene" id="scene" data-paper="open">
         <div class="floor-shadow" aria-hidden="true"></div>
