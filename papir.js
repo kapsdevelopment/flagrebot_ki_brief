@@ -1,7 +1,7 @@
 "use strict";
 
+const presentation = document.getElementById("presentation");
 const scene = document.getElementById("scene");
-const action = document.getElementById("advance");
 const letter = document.getElementById("letter");
 const pageIndex = document.getElementById("page-index");
 const pageTitle = document.getElementById("page-title");
@@ -80,7 +80,6 @@ async function advance() {
   if (!robot || moving) return;
   moving = true;
   clearTimeout(spinTimer);
-  action.setAttribute("aria-disabled", "true");
   try {
     status.textContent = "Bytter tekst …";
     if (spinning) await spinning;
@@ -105,16 +104,20 @@ async function advance() {
     status.textContent = `${page + 1} av ${pages.length} · ${pages[page].title}`;
   } finally {
     moving = false;
-    action.removeAttribute("aria-disabled");
     idle?.sync();
     scheduleSpin();
   }
 }
 
 renderPage();
-action.addEventListener("click", advance);
-scene.addEventListener("click", () => {
+presentation.addEventListener("click", () => {
   if (!window.getSelection()?.toString()) advance();
+});
+document.addEventListener("keydown", (event) => {
+  if (event.defaultPrevented || event.altKey || event.ctrlKey || event.metaKey) return;
+  if (!["Enter", " ", "ArrowRight"].includes(event.key)) return;
+  event.preventDefault();
+  if (!event.repeat) advance();
 });
 
 function loadIllustration(url) {
@@ -131,10 +134,10 @@ loadIllustration("poses.png").then((poses) => {
     standingPose: robot.standingPose,
   });
   idle?.sync();
-  action.disabled = false;
   scheduleSpin();
 }).catch((error) => {
   console.error(error);
+  status.classList.remove("visually-hidden");
   status.textContent = "Robotavataren kunne ikke lastes. Last siden på nytt.";
 });
 

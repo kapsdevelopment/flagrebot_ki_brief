@@ -5,19 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Prøv en presentasjon der robotavataren bretter ut teksten på et papirark.">
   <title>AI-brief på papir</title>
-  <link rel="stylesheet" href="papir.css?v=7">
+  <link rel="stylesheet" href="papir.css?v=8">
   <script src="head.js" defer></script>
   <script src="idle.js?v=10" defer></script>
   <script src="spin.js" defer></script>
   <script src="robot.js?v=7" defer></script>
   <script src="slides.js" defer></script>
-  <script src="papir.js?v=6" defer></script>
+  <script src="papir.js?v=7" defer></script>
 </head>
 <body>
-  <main>
-    <header>
-      <h1>AI-brief på papir<span>.</span></h1>
-    </header>
+  <main id="presentation" tabindex="0" aria-label="KI-brief"
+        aria-keyshortcuts="Enter Space ArrowRight"
+        aria-description="Trykk Enter, mellomrom eller høyrepil for å gå til neste side.">
     <div class="scene-wrap">
       <div class="scene" id="scene" data-paper="open">
         <div class="floor-shadow" aria-hidden="true"></div>
@@ -39,10 +38,7 @@
         </div>
       </div>
     </div>
-    <div class="controls">
-      <button type="button" id="advance" aria-controls="letter" disabled>Neste</button>
-      <p class="status" id="status" aria-live="polite">Klikk på scenen eller bruk knappen</p>
-    </div>
+    <p class="visually-hidden" id="status" role="status"></p>
     <noscript><p>Slå på JavaScript for å prøve papirvisningen.</p></noscript>
   </main>
 </body>
