@@ -97,7 +97,7 @@ const pages = [
     layout: "closing",
     metrics: [
       { value: "Over 1000", label: "linjer kode (1211)" },
-      { value: "Ca 2 timer", label: "brukt på å lage brief" },
+      { value: "Samme tid", label: "som å lage powerpoint" },
       { value: "100 timers", label: "arbeid for en utvikler i 2021" },
     ],
   },
