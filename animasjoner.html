@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="nb">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Flagrebots bevegelser · KI-briefen</title>
+  <link rel="stylesheet" href="papir.css?v=17">
+  <link rel="stylesheet" href="animasjoner.css">
+  <script src="head.js" defer></script>
+  <script src="idle.js?v=11" defer></script>
+  <script src="spin.js?v=2" defer></script>
+  <script src="robot.js?v=8" defer></script>
+  <script src="bevegelser.js" defer></script>
+  <script src="animasjoner.js" defer></script>
+</head>
+<body>
+  <main class="comparison">
+    <a class="back" href="./#avslutning"><span aria-hidden="true">←</span> Tilbake til briefen</a>
+    <h1>Flagrebots bevegelser</h1>
+    <div class="choices" role="group" aria-label="Velg bevegelse">
+      <button type="button" value="fold" aria-pressed="true">Papirbrett</button>
+      <button type="button" value="look" aria-pressed="false">Blikk og blunk</button>
+      <button type="button" value="spin" aria-pressed="false">Piruett</button>
+    </div>
+    <div class="studies">
+      <figure><h2>Før</h2><div class="stage"></div><figcaption></figcaption></figure>
+      <figure><h2>Etter</h2><div class="stage"></div><figcaption></figcaption></figure>
+    </div>
+    <div class="transport">
+      <button type="button" id="play" disabled>Spill av</button>
+      <input type="range" id="timeline" aria-label="Tid i bevegelsen" min="0" max="3325" value="0" step="1" disabled>
+    </div>
+    <p role="status" id="comparison-status">Laster animasjonene …</p>
+    <template id="study-scene">
+      <div class="scene" aria-hidden="true">
+        <div class="floor-shadow"></div>
+        <canvas class="rear-grip" width="1086" height="1448"></canvas>
+        <div class="sheet">
+          <div class="paper-flap"><div class="paper-front"><b></b></div></div>
+          <div class="paper-bottom"></div>
+        </div>
+        <div class="robot avatar-view">
+          <canvas width="1086" height="1448"></canvas>
+          <canvas width="1086" height="1448" hidden></canvas>
+        </div>
+      </div>
+    </template>
+  </main>
+</body>
+</html>

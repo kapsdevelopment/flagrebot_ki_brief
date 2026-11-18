@@ -1,0 +1,89 @@
+.comparison {
+  max-width: 72rem;
+  min-height: 100dvh;
+  margin-inline: auto;
+  padding: clamp(1rem, 4vw, 3rem);
+  align-content: center;
+  justify-items: stretch;
+  gap: 1.1rem;
+  cursor: auto;
+}
+.back {
+  justify-self: start;
+  color: #70374f;
+  font-size: .92rem;
+  text-underline-offset: .22em;
+}
+.comparison h1 {
+  margin: 0;
+  font: 600 clamp(2rem, 5.4vw, 4.2rem)/1.06 ui-serif, Georgia, serif;
+  letter-spacing: -.045em;
+}
+.choices, .transport { display: flex; align-items: center; gap: .4rem; }
+.comparison button {
+  line-height: 1.25;
+  font-family: inherit;
+  font-weight: 600;
+  font-size: .94rem;
+  background: transparent;
+  border: 1px solid #ac949e;
+  border-radius: 2rem;
+  padding: .57em 1em;
+  color: #573545;
+  cursor: pointer;
+}
+.comparison button[aria-pressed="true"], #play { background: #713852; color: #fff7fa; border-color: #713852; }
+.comparison :focus-visible { outline: 3px solid #993d63; outline-offset: 3px; }
+.studies {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(.55rem, 2vw, 1.6rem);
+}
+.studies figure { margin: 0; min-width: 0; }
+.studies h2 { font-size: clamp(1.4rem, 3vw, 2.2rem); margin-bottom: .4rem; color: #793c59; }
+.stage {
+  container-type: inline-size;
+  overflow: hidden;
+  border: 1px solid #71515f28;
+  border-radius: .65rem;
+  background: radial-gradient(ellipse at 65% 35%, #fff5ea, #e8d9df);
+}
+.stage .scene {
+  --robot-height: 64cqw;
+  --top-inset: 3cqw;
+  --edge: 3cqw;
+  --sheet-left: 39cqw;
+  --visible-paper-width: 53cqw;
+  height: calc(var(--top-inset) + var(--robot-height) * 1.3624 + var(--edge));
+}
+.stage .sheet { width: var(--visible-paper-width); }
+.stage .paper-front b {
+  font: 600 4.5cqw/1.1 ui-serif, Georgia, serif;
+  letter-spacing: -.02em;
+}
+.stage .paper-front { padding: 2cqw 3cqw; }
+.comparison[data-action="look"] .sheet, .comparison[data-action="spin"] .sheet { display: none; }
+.comparison[data-action="look"] .scene, .comparison[data-action="spin"] .scene {
+  --robot-left: calc(50% - var(--robot-height) * .225);
+  --robot-top: 12cqw;
+}
+.studies figcaption { margin-top: .65rem; font-size: clamp(.87rem, 1.5vw, 1.05rem); line-height: 1.45; }
+.transport { gap: .9rem; }
+#play { min-width: 8rem; }
+#timeline { width: 100%; min-width: 0; accent-color: #793c59; cursor: pointer; }
+#comparison-status { margin: 0; }
+#comparison-status:empty { display: none; }
+@media (min-width: 701px) {
+  .stage .scene {
+    --robot-height: min(44cqw, 39dvh);
+    --sheet-left: calc(5cqw + var(--robot-height) * .543);
+    --visible-paper-width: calc(94cqw - var(--sheet-left));
+  }
+  .comparison[data-action="look"] .scene, .comparison[data-action="spin"] .scene {
+    --robot-top: calc(var(--top-inset) + var(--robot-height) * .18);
+  }
+}
+@media (max-width: 430px) {
+  .comparison { padding: .85rem; gap: .9rem; }
+  .choices button { font-size: .84rem; padding-inline: .75em; }
+}

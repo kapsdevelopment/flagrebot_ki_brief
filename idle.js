@@ -1,7 +1,6 @@
 "use strict";
 
-function createIdleAnimation(poses, getPose, { scale = 756 / 512, offsetX = 140, offsetY = 126, standingPose = poses } = {}) {
-  const canvas = document.getElementById("idle-eyes");
+function createIdleAnimation(poses, getPose, { scale = 756 / 512, offsetX = 140, offsetY = 126, standingPose = poses, canvas = document.getElementById("idle-eyes") } = {}) {
   const context = canvas.getContext("2d");
   if (!context) return null;
   const avatarView = canvas.parentElement;
@@ -102,11 +101,15 @@ function createIdleAnimation(poses, getPose, { scale = 756 / 512, offsetX = 140,
     portraitContext.drawImage(layer, left, top);
   }
 
-  function drawHeadLook(face, horizontal, vertical, gazeX, gazeY) {
+  function drawHeadLook(face, horizontal, vertical, gazeX, gazeY, blink) {
     portraitContext.clearRect(0, 0, 512, 512);
     portraitContext.drawImage(face.image, ...face.source, 512, 512, 0, 0, 512, 512);
     if (gazeX !== 0 || gazeY !== 0) {
       for (const eye of face.eyes) drawGlance(eye, gazeX, gazeY);
+    }
+
+    if (blink > 0) {
+      for (const eye of face.eyes) drawBlink(portraitContext, eye, blink);
     }
 
     if (!headRenderer || (horizontal === 0 && vertical === 0)) {
@@ -123,7 +126,7 @@ function createIdleAnimation(poses, getPose, { scale = 756 / 512, offsetX = 140,
     context.drawImage(turned, 0, 0);
   }
 
-  function drawBlink(eye, closure) {
+  function drawBlink(context, eye, closure) {
     const { x, y, rx, outline } = eye;
     const shell = context.createLinearGradient(x, y - 22, x + 3, y + 23);
     shell.addColorStop(0, "#fcebe1");
@@ -171,30 +174,39 @@ function createIdleAnimation(poses, getPose, { scale = 756 / 512, offsetX = 140,
     timer = setTimeout(animate, delay);
   }
 
-  function animate() {
-    const face = faces[pose];
-    const looking = eventCount++ % 3 === 1;
-    const [lookX, lookY] = looking ? lookDirections[lookCount++ % lookDirections.length] : [0, 0];
-    const duration = looking ? 2450 : 210;
-    const started = performance.now();
+  function paint(poseName, looking, lookX, lookY, elapsed, strength = 1, original = false) {
+    const face = faces[poseName];
     canvas.hidden = false;
     avatarView.classList.toggle("looking", looking);
-
-    function paint(elapsed, strength) {
-      context.clearRect(0, 0, canvas.width, canvas.height);
-      context.save();
-      context.setTransform(scale, 0, 0, scale, offsetX, offsetY);
-      if (looking) {
-        const gaze = ease(Math.min(elapsed / 185, (1390 - elapsed) / 270));
-        const headTurn = ease(Math.min((elapsed - 65) / 380, (1540 - elapsed) / 390));
-        drawHeadLook(face, lookX * headTurn * strength, lookY * headTurn * strength,
-          lookX * gaze * strength, lookY * gaze * strength);
-      } else {
-        const closure = ease(Math.min(elapsed / 67, (duration - elapsed) / 108));
-        for (const eye of face.eyes) drawBlink(eye, closure * strength);
-      }
-      context.restore();
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    context.save();
+    context.setTransform(scale, 0, 0, scale, offsetX, offsetY);
+    if (looking) {
+      const gaze = original
+        ? ease(Math.min(elapsed / 185, (1390 - elapsed) / 270))
+        : phase(elapsed, 0, 145) - phase(elapsed, 860, 1080);
+      const headTurn = original
+        ? ease(Math.min((elapsed - 65) / 380, (1540 - elapsed) / 390))
+        : phase(elapsed, 90, 540) - phase(elapsed, 1040, 1590);
+      // Shift attention back to the audience, then let the neck catch up.
+      const audience = original ? 0 : phase(elapsed, 900, 1120) - phase(elapsed, 1730, 2050);
+      const blink = original ? 0 : phase(elapsed, 990, 1055) - phase(elapsed, 1070, 1190);
+      drawHeadLook(face, (lookX * headTurn - .35 * audience) * strength, lookY * headTurn * strength,
+        (lookX * gaze - .7 * audience) * strength, lookY * gaze * strength, blink * strength);
+    } else {
+      const closure = original ? ease(Math.min(elapsed / 67, (210 - elapsed) / 108))
+                               : phase(elapsed, 0, 63) - phase(elapsed, 74, 208);
+      for (const eye of face.eyes) drawBlink(context, eye, closure * strength);
     }
+    context.restore();
+  }
+
+  function animate() {
+    const poseName = pose;
+    const looking = eventCount++ % 3 === 1;
+    const [lookX, lookY] = looking ? lookDirections[lookCount++ % lookDirections.length] : [0, 0];
+    const duration = looking ? 2050 : 210;
+    const started = performance.now();
 
     function tick(now) {
       const elapsed = now - started;
@@ -203,7 +215,7 @@ function createIdleAnimation(poses, getPose, { scale = 756 / 512, offsetX = 140,
         schedule();
         return;
       }
-      drawActive = (strength) => paint(elapsed, strength);
+      drawActive = (strength) => paint(poseName, looking, lookX, lookY, elapsed, strength);
       drawActive(1);
       frame = requestAnimationFrame(tick);
     }
@@ -212,6 +224,9 @@ function createIdleAnimation(poses, getPose, { scale = 756 / 512, offsetX = 140,
   }
 
   return {
+    paint,
+    clear,
+
     settle() {
       clearTimeout(timer);
       cancelAnimationFrame(frame);

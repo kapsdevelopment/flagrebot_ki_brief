@@ -147,7 +147,7 @@ function createPaperRobot(canvas, rearCanvas, poses) {
     return from + Math.atan2(Math.sin(change), Math.cos(change)) * amount;
   }
 
-  function renderGrip(layer, behind, fold, engaged, fingers) {
+  function renderGrip(layer, behind, fold, engaged, fingers, original = false) {
     // Slide along the same edge of the moving flap towards its hinge.
     const fromCrease = halfSheetHeight * (.035 + .825 * (1 - paperEase((fold - .08) / .52)));
     const gripY = paperGrip.y + halfSheetHeight - fromCrease * Math.cos(Math.PI * fold);
@@ -185,16 +185,24 @@ function createPaperRobot(canvas, rearCanvas, poses) {
       x: elbow.x + forearmLength * Math.cos(forearmAngle),
       y: elbow.y + forearmLength * Math.sin(forearmAngle),
     };
+    // Let the free forearm counterbalance the torso at its elbow joint.
+    const freeElbow = {
+      x: hip.x + cos * (farElbow.x - hip.x) - sin * (farElbow.y - hip.y),
+      y: hip.y + sin * (farElbow.x - hip.x) + cos * (farElbow.y - hip.y),
+    };
+    const freeAngle = original ? bend : bend * .55 - .10 * engaged;
+    const dx = farWrist.x - farElbow.x;
+    const dy = farWrist.y - farElbow.y;
     const otherWrist = {
-      x: hip.x + cos * (farWrist.x - hip.x) - sin * (farWrist.y - hip.y),
-      y: hip.y + sin * (farWrist.x - hip.x) + cos * (farWrist.y - hip.y),
+      x: freeElbow.x + Math.cos(freeAngle) * dx - Math.sin(freeAngle) * dy,
+      y: freeElbow.y + Math.sin(freeAngle) * dx + Math.cos(freeAngle) * dy,
     };
 
     drawLegs(layer);
     drawPart(layer, upperShell, shoulder, joint, upperAngle - upperRestAngle, drawUpperArm);
     drawPart(layer, torso, hip, hip, bend);
-    drawPart(layer, farForearm, hip, hip, bend, drawForearm);
-    drawHand(layer, null, otherWrist, .98 + bend, -1, relaxed);
+    drawPart(layer, farForearm, farElbow, freeElbow, freeAngle, drawForearm);
+    drawHand(layer, null, otherWrist, .98 + freeAngle, -1, relaxed);
     drawPart(layer, nearForearm, elbowRest, elbow, forearmAngle - forearmRestAngle, drawForearm);
     drawHand(layer, behind, wrist, forearmAngle + engaged * wristFlex, 1, fingers);
   }
@@ -206,7 +214,7 @@ function createPaperRobot(canvas, rearCanvas, poses) {
   return {
     standingPose,
 
-    draw(fold, engaged, fingers = relaxed * (1 - engaged)) {
+    draw(fold, engaged, fingers = relaxed * (1 - engaged), original = false) {
       context.clearRect(0, 0, canvas.width, canvas.height);
       rearContext.clearRect(0, 0, rearCanvas.width, rearCanvas.height);
       context.save();
@@ -215,9 +223,29 @@ function createPaperRobot(canvas, rearCanvas, poses) {
       context.setTransform(scale, 0, 0, scale, offsetX, offsetY);
       rearContext.setTransform(scale, 0, 0, scale, offsetX, offsetY);
       if (engaged === 0) context.drawImage(standingPose, 0, 0);
-      else renderGrip(context, rearContext, fold, engaged, fingers);
+      else renderGrip(context, rearContext, fold, engaged, fingers, original);
       context.restore();
       rearContext.restore();
+    },
+
+    turnOnFoot(image, turn, lean, onOneFoot) {
+      const { scale, offsetX, offsetY } = paperRestPlacement;
+      const footX = offsetX + 230 * scale;
+      const footY = offsetY + 500 * scale;
+      context.clearRect(0, 0, canvas.width, canvas.height);
+      rearContext.clearRect(0, 0, rearCanvas.width, rearCanvas.height);
+      context.save();
+      context.translate(footX, footY);
+      context.rotate(lean);
+      if (onOneFoot < 1) {
+        context.globalAlpha = 1 - onOneFoot;
+        context.drawImage(standingPose, offsetX - footX, offsetY - footY, 512 * scale, 512 * scale);
+      }
+      if (onOneFoot > 0) {
+        context.globalAlpha = onOneFoot;
+        drawPirouetteFrame(context, image, turn, 0, 0, 3.46, 1);
+      }
+      context.restore();
     },
 
     spin(image, turn) {

@@ -88,7 +88,7 @@ main:focus-visible {
   height: 100%;
 }
 
-.avatar-view.looking #avatar { opacity: 0; }
+.avatar-view.looking > canvas:first-child { opacity: 0; }
 
 .sheet {
   --letter-inset: clamp(.55rem, 4.5cqw, 2.9rem);
@@ -203,7 +203,7 @@ main:focus-visible {
   clip-path: polygon(0 0, 100% 0, 100% 100%, 83% calc(100% - .7px), 62% 100%, 48% calc(100% - .5px), 25% 100%, 11% calc(100% - .6px), 0 100%);
 }
 
-.paper-front, .paper-flap::after { backface-visibility: hidden; }
+.paper-front, .paper-flap::after { backface-visibility: hidden; filter: brightness(var(--fold-light, 1)); }
 
 .paper-flap::after {
   --paper-outline: var(--lower-outline);
@@ -360,6 +360,15 @@ h2 {
 .closing-metric:first-child { grid-area: 1 / 1 / 3; }
 .closing-metric:nth-child(2) { grid-area: 1 / 3; }
 .closing-metric:nth-child(3) { grid-area: 2 / 3; }
+
+.motion-link {
+  display: table;
+  margin: clamp(1rem, 4dvh, 2.5rem) auto 0;
+  padding: .45rem .7rem;
+  color: var(--closing-accent);
+  font-weight: 600;
+  text-underline-offset: .22em;
+}
 
 @keyframes closing-appear {
   from { opacity: 0; }
